@@ -6,9 +6,15 @@ namespace Car
     {
         bool EngineIsRunning { get; }
 
+        void BrakeBy(int speed);
+
+        void Accelerate(int speed);
+
         void EngineStart();
 
         void EngineStop();
+
+        void FreeWheel();
 
         void Refuel(double liters);
 
@@ -51,6 +57,16 @@ namespace Car
             }
         }
 
+        public void Accelerate(int speed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void BrakeBy(int speed)
+        {
+            throw new NotImplementedException();
+        }
+
         public void EngineStart()
         {
             engine.Start();
@@ -59,6 +75,11 @@ namespace Car
         public void EngineStop()
         {
             engine.Stop();
+        }
+
+        public void FreeWheel()
+        {
+            throw new NotImplementedException();
         }
 
         public void Refuel(double liters)
