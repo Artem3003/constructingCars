@@ -17,26 +17,58 @@ namespace Car
 
     class Car : ICar
     {
-        public bool EngineIsRunning => throw new NotImplementedException();
+        public IFuelTankDisplay fuelTankDisplay;
+
+        private IEngine engine;
+
+        private IFuelTank fuelTank;
+
+        public Car()
+        {
+            this.fuelTank = new FuelTank(20);
+            this.engine = new Engine(this.fuelTank);
+            this.fuelTankDisplay = new FuelTankDisplay(this.fuelTank);
+        }
+
+        public Car(double fuelLevel)
+        {
+            if (fuelLevel >= 0 && fuelLevel <= 60)
+            {
+                this.fuelTank = new FuelTank(fuelLevel);
+                this.engine = new Engine(fuelTank);
+                this.fuelTankDisplay = new FuelTankDisplay(fuelTank);
+            }
+            this.fuelTank = new FuelTank(20);
+            this.engine = new Engine(fuelTank);
+            this.fuelTankDisplay = new FuelTankDisplay(fuelTank);
+        }
+
+        public bool EngineIsRunning
+        {
+            get
+            {
+                return engine.IsRunning;
+            }
+        }
 
         public void EngineStart()
         {
-            throw new NotImplementedException();
+            engine.Start();
         }
 
         public void EngineStop()
         {
-            throw new NotImplementedException();
+            engine.Stop();
         }
 
         public void Refuel(double liters)
         {
-            throw new NotImplementedException();
+            fuelTank.Refuel(liters);
         }
 
         public void RunningIdle()
         {
-            throw new NotImplementedException();
+            engine.Consume(0.0003);
         }
     }
 }
