@@ -13,10 +13,33 @@ namespace Car
 
     class FuelTankDisplay : IFuelTankDisplay
     {
-        public double FillLevel => throw new NotImplementedException();
+        private IFuelTank fuelTank;
+        public FuelTankDisplay(IFuelTank fuelTank)
+        {
+            this.fuelTank = fuelTank;
+        }
+        public double FillLevel
+        {
+            get
+            {
+                return Math.Round(fuelTank.FillLevel, 2);
+            }
+        }
 
-        public bool IsOnReserve => throw new NotImplementedException();
+        public bool IsOnReserve
+        {
+            get
+            {
+                return fuelTank.IsOnReserve;
+            }
+        }
 
-        public bool IsComplete => throw new NotImplementedException();
+        public bool IsComplete
+        {
+            get
+            {
+                return fuelTank.IsComplete;
+            }
+        }
     }
 }
