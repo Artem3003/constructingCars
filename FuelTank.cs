@@ -17,20 +17,61 @@ namespace Car
 
     class FuelTank : IFuelTank
     {
-        public double FillLevel => throw new NotImplementedException();
+        private double fuelLevel;
 
-        public bool IsOnReserve => throw new NotImplementedException();
+        public FuelTank(double fuelLevel)
+        {
+            this.fuelLevel = fuelLevel;
+        }
 
-        public bool IsComplete => throw new NotImplementedException();
+        public double FillLevel
+        {
+            get
+            {
+                return fuelLevel;
+            }
+        }
+
+        public bool IsComplete
+        {
+            get
+            {
+                if (fuelLevel == 60)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool IsOnReserve
+        {
+            get
+            {
+                if (fuelLevel <= 10)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
 
         public void Consume(double liters)
         {
-            throw new NotImplementedException();
+            if (fuelLevel <= 0)
+            {
+                fuelLevel = 0;
+            }
+            fuelLevel -= liters;
         }
 
         public void Refuel(double liters)
         {
-            throw new NotImplementedException();
+            fuelLevel += liters;
+            if (fuelLevel > 60)
+            {
+                fuelLevel = 60;
+            }
         }
-    }   
+    }
 }
