@@ -1,6 +1,6 @@
 using System;
 
-namespace constructionCar
+namespace Car
 {
     interface IDrivingInformationDisplay
     {
@@ -9,6 +9,18 @@ namespace constructionCar
 
     class DrivingInformationDisplay : IDrivingInformationDisplay
     {
-        public int ActualSpeed => throw new NotImplementedException();
+        IDrivingProcessor drivingProcessor;
+        public DrivingInformationDisplay(IDrivingProcessor drivingProcessor) 
+        {
+            this.drivingProcessor = drivingProcessor;
+        }
+
+        public int ActualSpeed
+        {
+            get
+            {
+              return drivingProcessor.ActualSpeed;
+            }
+        }
     }
 }
