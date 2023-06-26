@@ -23,14 +23,6 @@ In difference to most real cars, the fuel tank display is always showing its inf
 
 And consider the locigal things about fuel and engine... ;-)
 
-In all tests only the whole car will be tested. Feel free to write your own tests for the other classes.
-
-Under the text you will find the code of the interfaces.
-
-Have fun coding it and please don't forget to vote and rank this kata! :-)
-
-This kata is part of a series of katas for constructing a car:
-
 ## Driving
 
 If the car is free-wheeling (no pedal is used), it slows down the car by 1 km/h by air resistance and rolling resistance.
