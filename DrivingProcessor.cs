@@ -4,8 +4,12 @@ namespace Car
 {
     interface IDrivingProcessor
     {
+        double ActualConsumption { get; }
         int ActualSpeed { get; }
+        
+        void EngineStart();
 
+        void EngineStop();
         void IncreaseSpeedTo(int speed);
 
         void ReduceSpeed(int speed);
@@ -36,6 +40,18 @@ namespace Car
             {
               return this.actualSpeed;
             }
+        }
+
+        public double ActualConsumption => throw new NotImplementedException();
+
+        public void EngineStart()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EngineStop()
+        {
+            throw new NotImplementedException();
         }
 
         public void IncreaseSpeedTo(int speed)

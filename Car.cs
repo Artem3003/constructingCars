@@ -25,11 +25,13 @@ namespace Car
     {
         public IDrivingInformationDisplay drivingInformationDisplay;
         public IFuelTankDisplay fuelTankDisplay;
+
+        public IOnBoardComputerDisplay onBoardComputerDisplay;
         private IDrivingProcessor drivingProcessor;
-
         private IEngine engine;
-
         private IFuelTank fuelTank;
+        
+        private IOnBoardComputer onBoardComputer;
 
         public Car()
         {
