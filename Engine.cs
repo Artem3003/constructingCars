@@ -15,11 +15,12 @@ namespace Car
 
     class Engine : IEngine
     {
-        private bool isRunning = false;
+        private bool isRunning;
         private IFuelTank fuelTank;
 
         public Engine(IFuelTank fuelTank)
         {
+            this.isRunning = false;
             this.fuelTank = fuelTank;
         }
 
@@ -27,7 +28,7 @@ namespace Car
         {
             get
             {
-                return isRunning;
+                return this.isRunning;
             }
         }
 
@@ -36,9 +37,9 @@ namespace Car
             if (isRunning)
             {
                 fuelTank.Consume(liters);
-                if (fuelTank.FillLevel < 0)
+                if (fuelTank.FillLevel <= 0)
                 {
-                    isRunning = false;
+                    Stop();
                 }
             }
         }

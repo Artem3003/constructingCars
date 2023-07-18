@@ -6,7 +6,6 @@ namespace Car
     {
         static void Main(string[] args)
         {
-            
         }
     }
 }

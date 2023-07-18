@@ -17,6 +17,7 @@ namespace Car
 
     class FuelTank : IFuelTank
     {
+        private const double tankCap = 60;
         private double fuelLevel;
 
         public FuelTank(double fuelLevel)
@@ -28,7 +29,7 @@ namespace Car
         {
             get
             {
-                return fuelLevel;
+                return this.fuelLevel;
             }
         }
 
@@ -36,7 +37,7 @@ namespace Car
         {
             get
             {
-                if (fuelLevel == 60)
+                if (fuelLevel == tankCap)
                 {
                     return true;
                 }
@@ -48,7 +49,7 @@ namespace Car
         {
             get
             {
-                if (fuelLevel <= 10)
+                if (fuelLevel < 5)
                 {
                     return true;
                 }
@@ -63,14 +64,15 @@ namespace Car
                 fuelLevel = 0;
             }
             fuelLevel -= liters;
+            fuelLevel = Math.Round(fuelLevel, 10);
         }
 
         public void Refuel(double liters)
         {
             fuelLevel += liters;
-            if (fuelLevel > 60)
+            if (fuelLevel > tankCap)
             {
-                fuelLevel = 60;
+                fuelLevel = tankCap;
             }
         }
     }
