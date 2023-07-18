@@ -26,20 +26,8 @@ namespace Car
             }
         }
 
-        public bool IsOnReserve
-        {
-            get
-            {
-                return fuelTank.IsOnReserve;
-            }
-        }
+        public bool IsOnReserve => fuelTank.IsOnReserve;
 
-        public bool IsComplete
-        {
-            get
-            {
-                return fuelTank.IsComplete;
-            }
-        }
+        public bool IsComplete => fuelTank.IsComplete;
     }
 }

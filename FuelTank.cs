@@ -25,13 +25,7 @@ namespace Car
             this.fuelLevel = fuelLevel;
         }
 
-        public double FillLevel
-        {
-            get
-            {
-                return this.fuelLevel;
-            }
-        }
+        public double FillLevel => fuelLevel;
 
         public bool IsComplete
         {

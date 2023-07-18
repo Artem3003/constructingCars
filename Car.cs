@@ -25,12 +25,10 @@ namespace Car
     {
         public IDrivingInformationDisplay drivingInformationDisplay;
         public IFuelTankDisplay fuelTankDisplay;
-
         public IOnBoardComputerDisplay onBoardComputerDisplay;
         private IDrivingProcessor drivingProcessor;
         private IEngine engine;
         private IFuelTank fuelTank;
-        
         private IOnBoardComputer onBoardComputer;
 
         public Car()
@@ -66,20 +64,14 @@ namespace Car
             this.onBoardComputerDisplay = new OnBoardComputerDisplay(onBoardComputer);
         }
 
-        public bool EngineIsRunning
-        {
-            get
-            {
-                return engine.IsRunning;
-            }
-        }
+        public bool EngineIsRunning => engine.IsRunning;
 
         public void Accelerate(int speed)
         {
             if (EngineIsRunning)
             {
                 drivingProcessor.IncreaseSpeedTo(speed);
-                onBoardComputer.ElapseSecond();
+                onBoardComputer.ElapseSecond(); // change info in on-board computer
             }
         }
 
@@ -88,7 +80,7 @@ namespace Car
             if (EngineIsRunning)
             {
                 drivingProcessor.ReduceSpeed(speed);
-                onBoardComputer.ElapseSecond();
+                onBoardComputer.ElapseSecond(); // change info in on-board computer
             }
         }
 
@@ -97,8 +89,8 @@ namespace Car
             if (!EngineIsRunning)
             {
                 engine.Start();
-                drivingProcessor.EngineStart();
-                onBoardComputer.ElapseSecond();
+                drivingProcessor.EngineStart(); // make actual consumption 0
+                onBoardComputer.ElapseSecond(); // change info in on-board computer
             }
         }
 
@@ -107,8 +99,8 @@ namespace Car
             if (EngineIsRunning)
             {
                 engine.Stop();
-                drivingProcessor.EngineStop();
-                onBoardComputer.ElapseSecond();
+                drivingProcessor.EngineStop(); // make actual consumption 0
+                onBoardComputer.ElapseSecond(); // change info in on-board computer
                 onBoardComputer.TripReset();
             }
         }
@@ -119,8 +111,8 @@ namespace Car
             {
                 if (drivingProcessor.ActualSpeed > 0)
                 {
-                    drivingProcessor.ReduceSpeed(1);
-                    onBoardComputer.ElapseSecond();
+                    drivingProcessor.ReduceSpeed(1); // make actual consumption 0
+                    onBoardComputer.ElapseSecond(); // change info in on-board computer
                 } else
                 {
                     RunningIdle();
@@ -137,22 +129,25 @@ namespace Car
         {
             if (EngineIsRunning)
             {
-                drivingProcessor.ReduceSpeed(0);
-                onBoardComputer.ElapseSecond();
+                drivingProcessor.ReduceSpeed(0); // make actual consumption 0.0003
+                onBoardComputer.ElapseSecond(); // change info in on-board computer
             }
         }
         
+        // check the correct fuel level
         private void FuelLevelCheck(double fuelLevel)
         {
-            if (fuelLevel >= 0 && fuelLevel <= 60)
+            switch (fuelLevel)
             {
-                this.fuelTank = new FuelTank(fuelLevel);        
-            } else if (fuelLevel < 0)
-            {
-                this.fuelTank = new FuelTank(0);
-            } else if (fuelLevel > 60)
-            {
-                this.fuelTank = new FuelTank(60);
+                case < 0:
+                    this.fuelTank = new FuelTank(0);
+                    break;
+                case > 60:
+                    this.fuelTank = new FuelTank(60);
+                    break;
+                default:
+                    this.fuelTank = new FuelTank(fuelLevel); 
+                    break;
             }
         }
     }

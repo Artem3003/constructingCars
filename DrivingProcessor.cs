@@ -18,17 +18,17 @@ namespace Car
     class DrivingProcessor : IDrivingProcessor
     {
         private const int maxSpeed = 250;
-        private const int maxBraking = 10; 
+        private const int maxBraking = 10;
         
         private IEngine engine;
         private int maxAcceleration;
-        private int actualSpeed;
-        private double actualConsumption;
+        private int actualSpeed; // current speed of the car
+        private double actualConsumption; // currect consumption of the car
 
         public DrivingProcessor(IEngine engine, int maxAcceleration)
         {
             this.engine = engine;
-            // this.actualSpeed = 0;
+            this.actualSpeed = 0;
             this.maxAcceleration = maxAcceleration;
             this.actualConsumption = 0;
 
@@ -42,13 +42,7 @@ namespace Car
             }
         }
 
-        public int ActualSpeed
-        {
-            get
-            {
-              return this.actualSpeed;
-            }
-        }
+        public int ActualSpeed => actualSpeed;
 
         public double ActualConsumption => actualConsumption;
 
@@ -64,37 +58,43 @@ namespace Car
 
         public void IncreaseSpeedTo(int speed)
         {
+            // check whether car is running
             if (!engine.IsRunning)
             {
                 return;
             }
 
+            // if car's speed is higher than speed which we want, it just FreeWheel.
             if (speed < actualSpeed)
             {
                 actualSpeed--;
             }
 
+            // increase speed
             if (actualSpeed < speed)
             {
                 actualSpeed = Math.Min(speed, actualSpeed + maxAcceleration);
             }
             
+            // if speed is higher than car can go, it just stops in maxSpeed
             if (actualSpeed > maxSpeed)
             {
                 actualSpeed = maxSpeed;
             }
+
             actualConsumption = FuelConsuption(ActualSpeed);
-            engine.Consume(actualConsumption);
+            engine.Consume(actualConsumption); // consume fuel
         }
 
         public void ReduceSpeed(int speed)
         {
+            // check whether car is running
             if (!engine.IsRunning)
             {
                 return;
             }
 
-            actualSpeed -= Math.Min(speed, maxBraking);
+            actualSpeed -= Math.Min(speed, maxBraking); // reduce speed
 
             if (speed == 1)
             {
@@ -130,7 +130,6 @@ namespace Car
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
         }
     }
 }

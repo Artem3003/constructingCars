@@ -24,20 +24,14 @@ namespace Car
             this.fuelTank = fuelTank;
         }
 
-        public bool IsRunning
-        {
-            get
-            {
-                return this.isRunning;
-            }
-        }
+        public bool IsRunning => isRunning;
 
         public void Consume(double liters)
         {
             if (isRunning)
             {
-                fuelTank.Consume(liters);
-                if (fuelTank.FillLevel <= 0)
+                fuelTank.Consume(liters); // consume fuel
+                if (fuelTank.FillLevel <= 0) // If fuel = 0, car stops
                 {
                     Stop();
                 }
@@ -47,7 +41,7 @@ namespace Car
         public void Start()
         {
             isRunning = true;
-            if (fuelTank.FillLevel == 0)
+            if (fuelTank.FillLevel == 0) // if fuel = 0, car doesn't drive
             {
                 isRunning = false;
             }

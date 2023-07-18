@@ -50,15 +50,15 @@ namespace Car
         private IDrivingProcessor drivingProcessor;
         private IFuelTank fuelTank;
 
-        private List<double> tripConsumptionHistory;
-        private List<double> totalConsumptionHistory;
-        private List<int> tripSpeedHistory;
-        private List<int> totalSpeedHistory;
-        private List<int> tripDistanceHistory;
-        private List<int> totalDistanceHistory;
-        private List<double> tripConsumptionByDistanceHistory;
-        private List<double> totalConsumptionByDistanceHistory;
-        private List<double> factoryAndTotalConsumptionByTime;
+        private List<double> tripConsumptionHistory; // list of trip consumption
+        private List<double> totalConsumptionHistory; // list of total consumption
+        private List<int> tripSpeedHistory; // list of trip speed
+        private List<int> totalSpeedHistory; // list of total speed
+        private List<int> tripDistanceHistory; // list of trip distance
+        private List<int> totalDistanceHistory; // list of total distance
+        private List<double> tripConsumptionByDistanceHistory; // list of trip consumtion by distance
+        private List<double> totalConsumptionByDistanceHistory; // list of total consumption by distance
+        private List<double> factoryAndTotalConsumptionByTime; // list of consumption by time for estimate range
         
 
         public OnBoardComputer(IDrivingProcessor drivingProcessor, IFuelTank fuelTank)
