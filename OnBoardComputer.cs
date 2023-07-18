@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Car
 {
@@ -45,51 +47,91 @@ namespace Car
 
     class OnBoardComputer : IOnBoardComputer
     {
-        public int TripRealTime => throw new NotImplementedException();
+        private IDrivingProcessor drivingProcessor;
+        private IFuelTank fuelTank;
 
-        public int TripDrivingTime => throw new NotImplementedException();
+        private List<double> tripConsumptionHistory;
+        private List<double> totalConsumptionHistory;
+        private List<int> tripSpeedHistory;
+        private List<int> totalSpeedHistory;
+        private List<int> tripDistanceHistory;
+        private List<int> totalDistanceHistory;
+        private List<double> tripConsumptionByDistanceHistory;
+        private List<double> totalConsumptionByDistanceHistory;
+        private List<double> factoryAndTotalConsumptionByTime;
+        
 
-        public int TripDrivenDistance => throw new NotImplementedException();
+        public OnBoardComputer(IDrivingProcessor drivingProcessor, IFuelTank fuelTank)
+        {
+            this.drivingProcessor = drivingProcessor;
+            this.fuelTank = fuelTank;
+            this.tripConsumptionHistory = new List<double>();
+            this.totalConsumptionHistory = new List<double>();
+            this.tripSpeedHistory = new List<int>();
+            this.totalSpeedHistory = new List<int>();
+            this.tripDistanceHistory = new List<int>();
+            this.totalDistanceHistory = new List<int>();
+            this.tripConsumptionByDistanceHistory = new List<double>();
+            this.totalConsumptionByDistanceHistory = new List<double>();
+            this.factoryAndTotalConsumptionByTime = new List<double>();
+            factoryAndTotalConsumptionByTime.AddRange(Enumerable.Repeat(4.8, 100).ToList());
+        }
 
-        public int TotalRealTime => throw new NotImplementedException();
-
-        public int TotalDrivingTime => throw new NotImplementedException();
-
-        public int TotalDrivenDistance => throw new NotImplementedException();
-
-        public double TripAverageSpeed => throw new NotImplementedException();
-
-        public double TotalAverageSpeed => throw new NotImplementedException();
-
-        public int ActualSpeed => throw new NotImplementedException();
-
-        public double ActualConsumptionByTime => throw new NotImplementedException();
-
-        public double ActualConsumptionByDistance => throw new NotImplementedException();
-
-        public double TripAverageConsumptionByTime => throw new NotImplementedException();
-
-        public double TotalAverageConsumptionByTime => throw new NotImplementedException();
-
-        public double TripAverageConsumptionByDistance => throw new NotImplementedException();
-
-        public double TotalAverageConsumptionByDistance => throw new NotImplementedException();
-
-        public int EstimatedRange => throw new NotImplementedException();
+        public int TripRealTime => tripSpeedHistory.Count;
+        public int TripDrivingTime => tripSpeedHistory.Count(s => s > 0);
+        public int TripDrivenDistance => tripDistanceHistory.Sum();
+        public int TotalRealTime => totalSpeedHistory.Count;
+        public int TotalDrivingTime => totalSpeedHistory.Count(s => s > 0);
+        public int TotalDrivenDistance => totalDistanceHistory.Sum();
+        public double TripAverageSpeed => tripSpeedHistory.Sum() / (double)tripSpeedHistory.Count(s => s > 0);
+        public double TotalAverageSpeed => totalSpeedHistory.Sum() / (double)totalSpeedHistory.Count(s => s > 0);
+        public int ActualSpeed => drivingProcessor.ActualSpeed;
+        public double ActualConsumptionByTime => tripConsumptionHistory.Count == 0 ? 0 : tripConsumptionHistory.Last();
+        public double ActualConsumptionByDistance => (tripDistanceHistory.Count == 0 || tripDistanceHistory.Last() == 0) ? double.NaN : 100.0 * tripConsumptionHistory.Last() / (tripDistanceHistory.Last() / 3600.0);
+        public double TripAverageConsumptionByTime => tripConsumptionHistory.Count > 0 ? tripConsumptionHistory.Sum() / tripConsumptionHistory.Count : 0;
+        public double TotalAverageConsumptionByTime => totalConsumptionHistory.Count > 0 ? totalConsumptionHistory.Sum() / totalConsumptionHistory.Count : 0;
+        public double TripAverageConsumptionByDistance => tripConsumptionByDistanceHistory.Count > 0 ? tripConsumptionByDistanceHistory.Average() : 0;
+        public double TotalAverageConsumptionByDistance => totalConsumptionByDistanceHistory.Count > 0 ? totalConsumptionByDistanceHistory.Average() : 0;
+        public int EstimatedRange => (int)Math.Round((100 * fuelTank.FillLevel) / factoryAndTotalConsumptionByTime.Concat(tripConsumptionByDistanceHistory).ToList().TakeLast(100).Average() + 4.8 / 100.0);
 
         public void ElapseSecond()
         {
-            throw new NotImplementedException();
+            tripSpeedHistory.Add(ActualSpeed);
+            totalSpeedHistory.Add(ActualSpeed);
+
+            tripConsumptionHistory.Add(drivingProcessor.ActualConsumption);
+            totalConsumptionHistory.Add(drivingProcessor.ActualConsumption);
+
+            tripDistanceHistory.Add(ActualSpeed);
+            totalDistanceHistory.Add(ActualSpeed);
+
+            if (!Double.IsNaN(ActualConsumptionByDistance))
+            {
+                tripConsumptionByDistanceHistory.Add(Math.Round(ActualConsumptionByDistance, 2));
+                totalConsumptionByDistanceHistory.Add(Math.Round(ActualConsumptionByDistance, 2));
+            }
+            else if (drivingProcessor.ActualSpeed != 0)
+            {
+                tripConsumptionByDistanceHistory.Add(drivingProcessor.ActualConsumption);
+                totalConsumptionByDistanceHistory.Add(drivingProcessor.ActualConsumption);
+            }
         }
 
         public void TotalReset()
         {
-            throw new NotImplementedException();
+            totalConsumptionHistory.Clear();
+            totalSpeedHistory.Clear();
+            totalDistanceHistory.Clear();
+            totalConsumptionByDistanceHistory.Clear();
+            factoryAndTotalConsumptionByTime.Clear();
         }
 
         public void TripReset()
         {
-            throw new NotImplementedException();
+            tripConsumptionHistory.Clear();
+            tripSpeedHistory.Clear();
+            tripDistanceHistory.Clear();
+            tripConsumptionByDistanceHistory.Clear();
         }
     }
 }

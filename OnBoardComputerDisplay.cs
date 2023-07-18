@@ -43,46 +43,37 @@ namespace Car
 
     class OnBoardComputerDisplay : IOnBoardComputerDisplay
     {
-        public int TripRealTime => throw new NotImplementedException();
+        private IOnBoardComputer onBoardComputer;
+        public OnBoardComputerDisplay(IOnBoardComputer onBoardComputer)
+        {
+            this.onBoardComputer = onBoardComputer;
+        }
 
-        public int TripDrivingTime => throw new NotImplementedException();
-
-        public double TripDrivenDistance => throw new NotImplementedException();
-
-        public int TotalRealTime => throw new NotImplementedException();
-
-        public int TotalDrivingTime => throw new NotImplementedException();
-
-        public double TotalDrivenDistance => throw new NotImplementedException();
-
-        public int ActualSpeed => throw new NotImplementedException();
-
-        public double TripAverageSpeed => throw new NotImplementedException();
-
-        public double TotalAverageSpeed => throw new NotImplementedException();
-
-        public double ActualConsumptionByTime => throw new NotImplementedException();
-
-        public double ActualConsumptionByDistance => throw new NotImplementedException();
-
-        public double TripAverageConsumptionByTime => throw new NotImplementedException();
-
-        public double TotalAverageConsumptionByTime => throw new NotImplementedException();
-
-        public double TripAverageConsumptionByDistance => throw new NotImplementedException();
-
-        public double TotalAverageConsumptionByDistance => throw new NotImplementedException();
-
-        public int EstimatedRange => throw new NotImplementedException();
+        public int TripRealTime => onBoardComputer.TripRealTime;
+        public int TripDrivingTime => onBoardComputer.TripDrivingTime;
+        public double TripDrivenDistance => Math.Round(onBoardComputer.TripDrivenDistance / 3600.0, 2);
+        public int TotalRealTime => onBoardComputer.TotalRealTime;
+        public int TotalDrivingTime => onBoardComputer.TotalDrivingTime;
+        public double TotalDrivenDistance => Math.Round(onBoardComputer.TotalDrivenDistance / 3600.0, 2);
+        public int ActualSpeed => onBoardComputer.ActualSpeed;
+        public double TripAverageSpeed => Math.Round(onBoardComputer.TripAverageSpeed, 1);
+        public double TotalAverageSpeed => Math.Round(onBoardComputer.TotalAverageSpeed, 1);
+        public double ActualConsumptionByTime => Math.Round(onBoardComputer.ActualConsumptionByTime, 5);
+        public double ActualConsumptionByDistance => Math.Round(onBoardComputer.ActualConsumptionByDistance, 1);
+        public double TripAverageConsumptionByTime => Math.Round(onBoardComputer.TripAverageConsumptionByTime, 5);
+        public double TotalAverageConsumptionByTime => Math.Round(onBoardComputer.TotalAverageConsumptionByTime, 5);
+        public double TripAverageConsumptionByDistance => Math.Round(onBoardComputer.TripAverageConsumptionByDistance, 1);
+        public double TotalAverageConsumptionByDistance => Math.Round(onBoardComputer.TotalAverageConsumptionByDistance, 1);
+        public int EstimatedRange => onBoardComputer.EstimatedRange;
 
         public void TotalReset()
         {
-            throw new NotImplementedException();
+            onBoardComputer.TotalReset();
         }
 
         public void TripReset()
         {
-            throw new NotImplementedException();
+            onBoardComputer.TripReset();
         }
     }
 }
